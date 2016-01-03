@@ -1,0 +1,15 @@
+notes:
+
+
+a file: run_me,
+
+pre-process
+1. data cleaning: clear note, footnote, and []
+
+
+
+model:
+
+1. don't need to consider CV at early stage
+
+2. use word2vec
