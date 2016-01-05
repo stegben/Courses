@@ -1,0 +1,61 @@
+def betterEvaluationFunction(currentGameState):
+    """
+    Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
+    evaluation function (question 5).
+
+    DESCRIPTION: <write something here so we know what you did>
+	
+	For Pacman to win and survive the game, the following factor should be concerned:
+	
+	1. number of food rest
+	this number should be
+	
+	2. distant to all foods
+	the smaller the better.
+	also consider that the nearest should weighted more
+	so I use 1/distance as a feature
+	
+	3. distance to ghost
+	the larger the better. But ghost only matters when it's nearby
+	so I set two conditions: if the ghost is near, then add a distance feature,
+	if not, then simply ignore it.
+	
+	4. distance to scared ghost
+	the smaller the better.
+	
+	
+	finally, by adjusting each parameter, 
+	one can get a average of win rate of 9%, scoring 1300(include win and lost)
+	
+    """
+    
+
+	# score setting
+    foodRestRatio = 23
+    foodDistRatio = 7
+    ghostDistRatio = 100
+    ghostRange = 9
+    scaredGhostDistRatio = 300
+    scaredGhostChasedDistRatio = 500
+	
+	# scoring start!
+    if currentGameState.isWin():
+        return float("inf")
+    if currentGameState.isLose():
+        return -(float("inf")) 		
+
+    score = 0 - len(distFood) * foodRestRatio
+	
+    for df in distFood:
+        score += foodDistRatio/(df+0.001)
+    for ghost in ghostStates:
+        dist = util.manhattanDistance(curPos , ghost.getPosition())
+        if ghost.scaredTimer>0 and dist>ghost.scaredTimer/2:
+            score += scaredGhostDistRatio / (dist+0.001)
+        elif ghost.scaredTimer>0 and dist<=ghost.scaredTimer/2:
+            score += scaredGhostChasedDistRatio / (dist+0.001)
+        elif dist>ghostRange:
+            score -= ghostDistRatio / (dist+0.001) 
+	
+    score += currentGameState.getScore() 
+    return score
